@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name vera-module)(type Legacy)(uri ${KIPRJMOD}/vera-module.lib)(options "")(descr ""))
+  (lib (name vera-module-rev4-rescue)(type Legacy)(uri ${KIPRJMOD}/vera-module-rev4-rescue.lib)(options "")(descr ""))
+)

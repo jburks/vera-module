@@ -1,7 +1,7 @@
 //`default_nettype none
 
 module top(
-    input  wire       clk25,
+    input  wire       clk12,
 
     // External bus interface
     input  wire       extbus_cs_n,   /* Chip select */
@@ -29,19 +29,29 @@ module top(
     output wire       audio_bck,
     output wire       audio_data);
 
+    wire clk25;
+    wire pll_lock;
+
+    clk12_pll __(.ref_clk_i(clk12),
+        .rst_n_i(1'b1),
+        .lock_o(pll_lock),
+        .outcore_o(),
+        .outglobal_o(clk25));
+    wire clk = clk25;
+
     //////////////////////////////////////////////////////////////////////////
     // Synchronize external asynchronous reset signal to clk25 domain
     //////////////////////////////////////////////////////////////////////////
     reg [7:0] por_cnt_r = 0;
     always @(posedge clk25) if (!por_cnt_r[7]) por_cnt_r <= por_cnt_r + 8'd1;
 
-    wire reset;
+    wire reset_cnt;
     reset_sync reset_sync_clk25(
         .async_rst_in(!por_cnt_r[7]),
         .clk(clk25),
-        .reset_out(reset));
+        .reset_out(reset_cnt));
 
-    wire clk = clk25;
+    wire reset = reset_cnt | ~pll_lock;
 
     //////////////////////////////////////////////////////////////////////////
     // Bus accessible registers

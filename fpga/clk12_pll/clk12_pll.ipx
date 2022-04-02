@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<RadiantModule architecture="iCE40UP" date="2022 03 22 20:17:13" device="iCE40UP5K" generator="ipgen" library="module" module="pll" name="clk12_pll" package="SG48" source_format="Verilog" speed="High-Performance_1.2V" vendor="latticesemi.com" version="1.0.1">
+ <Package>
+  <File modified="2022 03 22 20:17:13" name="rtl/clk12_pll_bb.v" type="black_box_verilog"/>
+  <File modified="2022 03 22 20:17:13" name="clk12_pll.cfg" type="cfg"/>
+  <File modified="2022 03 22 20:17:13" name="misc/clk12_pll_tmpl.v" type="template_verilog"/>
+  <File modified="2022 03 22 20:17:13" name="misc/clk12_pll_tmpl.vhd" type="template_vhdl"/>
+  <File modified="2022 03 22 20:17:13" name="rtl/clk12_pll.v" type="top_level_verilog"/>
+  <File modified="2022 03 22 20:17:13" name="component.xml" type="IP-XACT_component"/>
+  <File modified="2022 03 22 20:17:13" name="design.xml" type="IP-XACT_design"/>
+ </Package>
+</RadiantModule>

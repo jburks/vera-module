@@ -1,5 +1,8 @@
+# 12MHz UPduino clock
+create_clock -name {clk12} -period 83.3 [get_ports clk12]
+
 # 25MHz system clock
-create_clock -name {clk25} -period 40 [get_ports clk25]
+create_generated_clock -name {clk25} -source [get_ports clk12] -divide_by 12 -multiply_by 25 [get_nets clk]
 
 # Define clock domains to be independent
 set_clock_groups -group [get_clocks clk25] -asynchronous

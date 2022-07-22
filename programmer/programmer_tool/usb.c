@@ -1,5 +1,5 @@
 #include "usb.h"
-#include <libusb.h>
+#include <libusb/libusb.h>
 
 #define CMD_EPIN_ADDR (0x83)
 #define CMD_EPOUT_ADDR (0x04)

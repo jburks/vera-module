@@ -62,9 +62,21 @@ const struct flash_info* flash_detect() {
     spi_transfer(buf, buf, sizeof(buf));
     spi_select(0);
     // hexdump(buf, sizeof(buf));
+    static struct flash_info i;
     if (buf[1] == 0xEF && buf[2] == 0x40 && buf[3] == 0x15) {
-        static struct flash_info i = { "W25Q16JV", 0x200000, 4096, 256 };
+        i.name = "W25Q16JV";
+        i.size = 0x200000;
+        i.sector_size = 4096;
+        i.page_size = 256;
         // .block_size = 32768,
+        return &i;
+    } else {
+        printf("Detected flash id: {%02x, %02x, %02x, %02x}\n", buf[0], buf[1], buf[2], buf[3]);
+        printf("Faking being W25Q16JV (Dangerous!)\n");
+        i.name = "W25Q16JV";
+        i.size = 0x200000;
+        i.sector_size = 4096;
+        i.page_size = 256;
         return &i;
     }
     return NULL;

@@ -60,6 +60,7 @@ module top(
     reg [31:0] vram_data0_32_r,               vram_data0_32_next;  // Not bus accesible
     reg [31:0] vram_data1_32_r,               vram_data1_32_next;  // Not bus accesible
     reg        dc_select_r,                   dc_select_next;
+    reg        linked_mode_r,                 linked_mode_next;
     reg        fpga_reconfigure_r,            fpga_reconfigure_next;
     reg        irq_enable_vsync_r,            irq_enable_vsync_next;
     reg        irq_enable_line_r,             irq_enable_line_next;
@@ -144,7 +145,7 @@ module top(
         5'h02: rddata = vram_addr_select_r ? {vram_addr_incr_1_r, vram_addr_decr_1_r, vram_wrpattern_1_r[1:0], vram_addr_1_r[16]} : {vram_addr_incr_0_r, vram_addr_decr_0_r, vram_wrpattern_0_r[1:0], vram_addr_0_r[16]};
         5'h03: rddata = vram_data0_r;
         5'h04: rddata = vram_data1_r;
-        5'h05: rddata = {6'b0, dc_select_r, vram_addr_select_r};
+        5'h05: rddata = {1'b0, linked_mode_r, 4'b0, dc_select_r, vram_addr_select_r};
 
         5'h06: rddata = {irq_line_r[8], scanline[8], 2'b0, irq_enable_audio_fifo_low_r, irq_enable_sprite_collision_r, irq_enable_line_r, irq_enable_vsync_r};
         5'h07: rddata = {sprite_collisions, audio_fifo_low, irq_status_sprite_collision_r, irq_status_line_r, irq_status_vsync_r};
@@ -310,6 +311,7 @@ module top(
         vram_data0_32_next               = vram_data0_32_r;
         vram_data1_32_next               = vram_data1_32_r;
         dc_select_next                   = dc_select_r;
+        linked_mode_next                 = linked_mode_r;
         fpga_reconfigure_next            = fpga_reconfigure_r;
         irq_enable_audio_fifo_low_next   = irq_enable_audio_fifo_low_r;
         irq_enable_vsync_next            = irq_enable_vsync_r;
@@ -381,48 +383,74 @@ module top(
         spi_txstart                      = 0;
 
         if (save_result_r) begin
-            if (!save_result_port_r) begin
+            if (linked_mode_r) begin
                 vram_data0_next = vram_rddata;
                 vram_data0_32_next = vram_rddata32;
-            end else begin
                 vram_data1_next = vram_rddata;
                 vram_data1_32_next = vram_rddata32;
+            end else begin
+                if (!save_result_port_r) begin
+                    vram_data0_next = vram_rddata;
+                    vram_data0_32_next = vram_rddata32;
+                end else begin
+                    vram_data1_next = vram_rddata;
+                    vram_data1_32_next = vram_rddata32;
+                end
             end
         end
 
         if (do_write) begin
             case (access_addr)
                 5'h00: begin
-                    if (vram_addr_select_r) begin
+                    if (linked_mode_r) begin
+                        vram_addr_0_next[7:0] = write_data;
                         vram_addr_1_next[7:0] = write_data;
                     end else begin
-                        vram_addr_0_next[7:0] = write_data;
+                        if (vram_addr_select_r) begin
+                            vram_addr_1_next[7:0] = write_data;
+                        end else begin
+                            vram_addr_0_next[7:0] = write_data;
+                        end
                     end
 
                     fetch_ahead_port_next = vram_addr_select_r;
                     fetch_ahead_next = 1;
                 end
                 5'h01: begin
-                    if (vram_addr_select_r) begin
+                    if (linked_mode_r) begin
+                        vram_addr_0_next[15:8] = write_data;
                         vram_addr_1_next[15:8] = write_data;
                     end else begin
-                        vram_addr_0_next[15:8] = write_data;
+                        if (vram_addr_select_r) begin
+                            vram_addr_1_next[15:8] = write_data;
+                        end else begin
+                            vram_addr_0_next[15:8] = write_data;
+                        end
                     end
 
                     fetch_ahead_port_next = vram_addr_select_r;
                     fetch_ahead_next = 1;
                 end
                 5'h02: begin
+                    if (linked_mode_r) begin
+                        vram_addr_0_next[16]  = write_data[0];
+                        vram_addr_1_next[16]  = write_data[0];
+                    end else begin
+                        if (vram_addr_select_r) begin
+                            vram_addr_1_next[16]  = write_data[0];
+                        end else begin
+                            vram_addr_0_next[16]  = write_data[0];
+                        end
+                    end
+                        
                     if (vram_addr_select_r) begin
                         vram_addr_incr_1_next = write_data[7:4];
                         vram_addr_decr_1_next = write_data[3];
                         vram_wrpattern_1_next = write_data[2:1];
-                        vram_addr_1_next[16]  = write_data[0];
                     end else begin
                         vram_addr_incr_0_next = write_data[7:4];
                         vram_addr_decr_0_next = write_data[3];
                         vram_wrpattern_0_next = write_data[2:1];
-                        vram_addr_0_next[16]  = write_data[0];
                     end
 
                     fetch_ahead_port_next = vram_addr_select_r;
@@ -434,6 +462,13 @@ module top(
                 end
                 5'h05: begin
                     fpga_reconfigure_next = write_data[7];
+                    linked_mode_next      = write_data[6];
+                    if (!linked_mode_r && linked_mode_next) begin
+                        // When linked_mode switches *on* we copy DATA1 to DATA0 (both 8 and 32 bits versions) and ADDR1 to ADDR0
+                        vram_addr_0_next   = vram_addr_1_r;
+                        vram_data0_next    = vram_data1_r;
+                        vram_data0_32_next = vram_data1_32_r;
+                    end
                     dc_select_next        = write_data[1];
                     vram_addr_select_next = write_data[0];
                 end
@@ -593,12 +628,20 @@ module top(
                 end
             end
 
+            if (linked_mode_r) begin
+                vram_addr_0_next = vram_addr_new;
+                vram_addr_1_next = vram_addr_new;
+            end else begin
+                if (access_addr == 5'h03) begin
+                    vram_addr_0_next = vram_addr_new;
+                end else begin
+                    vram_addr_1_next = vram_addr_new;
+                end
+            end
             if (access_addr == 5'h03) begin
                 fetch_ahead_port_next = 0;
-                vram_addr_0_next = vram_addr_new;
             end else begin
                 fetch_ahead_port_next = 1;
-                vram_addr_1_next = vram_addr_new;
             end
             fetch_ahead_next = 1;
         end
@@ -620,6 +663,7 @@ module top(
             vram_data0_32_r               <= 0;
             vram_data1_32_r               <= 0;
             dc_select_r                   <= 0;
+            linked_mode_r                 <= 0;
             fpga_reconfigure_r            <= 0;
             irq_enable_audio_fifo_low_r   <= 0;
             irq_enable_vsync_r            <= 0;
@@ -702,6 +746,7 @@ module top(
             vram_data0_32_r               <= vram_data0_32_next;
             vram_data1_32_r               <= vram_data1_32_next;
             dc_select_r                   <= dc_select_next;
+            linked_mode_r                 <= linked_mode_next;
             fpga_reconfigure_r            <= fpga_reconfigure_next;
             irq_enable_audio_fifo_low_r   <= irq_enable_audio_fifo_low_next;
             irq_enable_vsync_r            <= irq_enable_vsync_next;

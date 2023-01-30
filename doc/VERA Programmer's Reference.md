@@ -1,6 +1,6 @@
 # VERA Programmer's Reference
 
-Version 0.9
+Version 0.10
 
 _Author: Frank van den Hoef_
 
@@ -48,7 +48,7 @@ This document describes the **V**ersatile **E**mbedded **R**etro **A**dapter or 
 		<td>ADDRx_H (x=ADDRSEL)</td>
 		<td colspan="4" align="center">Address Increment</td>
 		<td colspan="1" align="center">DECR</td>
-		<td colspan="2" align="center">-</td>
+		<td colspan="2" align="center">Write pattern</td>
 		<td colspan="1" align="center">VRAM Address (16)</td>
 	</tr>
 	<tr>
@@ -308,6 +308,79 @@ By setting the 'Address Increment' field in ADDRx_H, the address will be increme
 |             15 |              640 |
 
 Setting the **DECR** bit, will decrement instead of increment by the value set by the 'Address Increment' field.
+
+### Multibyte write and copy
+
+The number of bytes that are written at once to VRAM can be changed by setting the two bits in **Write pattern**. In the default mode (both bits set to 0) only _one_ VRAM byte is changed when a byte is written to DATA0 or DATA1. This is the byte that exactly corresponds to the address written to. When the **Write pattern** is set differently multiple bytes (normally with the same value) are written to VRAM at the same time.
+
+Up to 4 bytes can be written to VRAM at once, aligned to a 32-bit address. Which of the 4 bytes are overwritten can be controlled: all possible patterns of bytes written to VRAM can be set by combining the 2 bits of **Write pattern** and the lower 2 bits of the address that is written to. Only the pattern that writes _nothing_ to VRAM cannot be set. 
+
+Below is the mapping:
+
+<table>
+    <thead>
+        <tr>
+            <th colspan="2" rowspan="2"></th>
+            <th colspan="5">address % 4</th>
+        </tr>
+        <tr>
+            <th>0</th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=4><b>bits 1 and 2</b><br/>($9F22)</td>
+            <td><b>00</b></td>
+            <td>+---</td>
+            <td>-+--</td>
+            <td>--+-</td>
+            <td>---+</td>
+        </tr>
+        <tr>
+            <td><b>01</b></td>
+            <td>-+-+</td>
+            <td>+-+-</td>
+            <td>++--</td>
+            <td>+--+</td>
+        </tr>
+        <tr>
+            <td><b>10</b></td>
+            <td>++++</td>
+            <td>+++-</td>
+            <td>-++-</td>
+            <td>++-+</td>
+        </tr>
+        <tr>
+            <td><b>11</b></td>
+            <td><b>blit</b></td>
+            <td>-+++</td>
+            <td>--++</td>
+            <td>+-++</td>
+        </tr>
+    </tbody>
+</table>
+
+**Note**: Each byte pattern consists of four +'s and -'s. Each - or + represents a _byte_ in VRAM. A + means the byte is written to and a - means the byte in VRAM is untouched.
+
+#### Blitting
+
+A special combination of the lower 2 bits of the address and the 2 bits in **Write pattern** is used to signify **copying** of (up to) 4 bytes at the same time (aka "blitting"). This is when address % 4 == 0 and the 2-bit pattern is 11b. This works as follows:
+
+1. Whenever there is a **read** from DATA0 or DATA1 (and this "blit-setting" is the case) an internal **32-bit cache** is filled with the 32-bit value at VRAM address ADDR0 or ADDR1 (aligned to 32-bit). 
+2. Whenever there is a **write** of value 0 to DATA0 or DATA1 (and this "blit-setting" is the case) this stored 32-bit cache is written to the VRAM address ADDR0 or ADDR1 (aligned to 32-bit).
+
+This effectively allows for copying 4 bytes _at the same time_ from VRAM to VRAM.
+
+#### Masked blitting
+
+It is also possible to blit _parts_ of the 32-bit cache. The value written to VERA (using a `sta DATA0` or `sta DATA1` in the above step 2) is namely used as an inverted nibble mask. For example: writing the value `11000011b` to DATA0 in blit mode will mean that only the two middle bytes of a 32-bit value are copied.
+
+Setting a bit to 0 in this inverted mask will make sure the corresponding nibble _will_ be copied. Setting a bit to 1 will let a nibble be _untouched_ during the blit. The Least Significant Bit (LSB) will affect the nibble with the lowest VRAM address (the left most pixel) and the MSB will affect the nibble with the highest VRAM address (the right most pixel).
+
+**Note**: the above feature (multibyte writing and copying) is limited to main Video RAM: $00000-$1F9BF
 
 ## Reset
 

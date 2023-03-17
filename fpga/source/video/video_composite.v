@@ -171,9 +171,10 @@ module video_composite(
 
     assign next_pixel = h_active;
 
-    wire [3:0] r = palette_rgb_data[11:8];
-    wire [3:0] g = palette_rgb_data[7:4];
-    wire [3:0] b = palette_rgb_data[3:0];
+    wire active = h_active && v_active;
+    wire [3:0] r = active ? palette_rgb_data[11:8] : 4'b0;
+    wire [3:0] g = active ? palette_rgb_data[7:4] : 4'b0;
+    wire [3:0] b = active ? palette_rgb_data[3:0] : 4'b0;
 
     video_modulator modulator(
         .clk(clk),

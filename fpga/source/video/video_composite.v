@@ -7,7 +7,7 @@ module video_composite(
     // Line buffer / palette interface
     input  wire [11:0] palette_rgb_data,
 
-    input wire line_mode,
+    input wire interlace,
 
     output wire        next_frame,
     output wire        next_line,
@@ -85,6 +85,8 @@ module video_composite(
     // uses the same composite sync signalling as 480i so 263 line mode is used
     // here.
 
+
+    wire line_mode = interlace;
 
     reg [10:0] vcnt = 0;  // half-lines
     wire v_sync =

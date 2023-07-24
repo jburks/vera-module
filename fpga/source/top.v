@@ -58,7 +58,7 @@ module top(
     wire        vram_addr_decr_1_r;
     wire  [7:0] vram_data0_r;
     wire  [7:0] vram_data1_r;
-    
+
     wire [16:0] ib_addr_r;
     wire        ib_addr_nibble_r;
     wire        ib_4bit_mode_r;
@@ -70,10 +70,10 @@ module top(
     wire  [7:0] ib_wrdata_r;
     wire        ib_write_r;
     wire        ib_do_access_r;
-    
+
     wire  [7:0] fx_fill_length_low;
     wire  [7:0] fx_fill_length_high;
-    
+
     wire        fx_transparency_enabled;
     wire        fx_cache_write_enabled;
     wire        fx_cache_fill_enabled;
@@ -165,8 +165,8 @@ module top(
     always @* case (extbus_a)
         5'h00: rddata = vram_addr_select_r ? vram_addr_1_r[7:0] : vram_addr_0_r[7:0];
         5'h01: rddata = vram_addr_select_r ? vram_addr_1_r[15:8] : vram_addr_0_r[15:8];
-        5'h02: rddata = vram_addr_select_r 
-                            ? {vram_addr_incr_1_r, vram_addr_decr_1_r, vram_addr_nib_incr_1_r, vram_addr_nib_1_r, vram_addr_1_r[16]} 
+        5'h02: rddata = vram_addr_select_r
+                            ? {vram_addr_incr_1_r, vram_addr_decr_1_r, vram_addr_nib_incr_1_r, vram_addr_nib_1_r, vram_addr_1_r[16]}
                             : {vram_addr_incr_0_r, vram_addr_decr_0_r, vram_addr_nib_incr_0_r, vram_addr_nib_0_r, vram_addr_0_r[16]};
         5'h03: rddata = vram_data0_r;
         5'h04: rddata = vram_data1_r;
@@ -196,7 +196,7 @@ module top(
                 6'h0: rddata = dc_vscale_r;
                 6'h1: rddata = dc_active_vstart_r[8:1];
                 6'h5: rddata = fx_fill_length_low;
-                default: rddata = 8'h01;
+                default: rddata = 8'h02;
             endcase
         end
         5'h0C: begin
@@ -207,7 +207,7 @@ module top(
                 default: rddata = 8'h01;
             endcase
         end
-        
+
         5'h0D: rddata = {l0_map_height_r, l0_map_width_r, l0_attr_mode_r, l0_bitmap_mode_r, l0_color_depth_r};
         5'h0E: rddata = l0_map_baseaddr_r;
         5'h0F: rddata = {l0_tile_baseaddr_r[7:2], l0_tile_height_r, l0_tile_width_r};
@@ -328,7 +328,7 @@ module top(
         spi_txstart                      = 0;
 
         // Note: writes to access addresses 00, 01, 02, 03 and 04 are handled inside the module addr_data
-        
+
         if (do_write && access_addr == 5'h05) begin
             fpga_reconfigure_next = write_data[7];
             dc_select_next        = write_data[6:1];
@@ -425,7 +425,7 @@ module top(
         if (do_write && access_addr == 5'h1A) begin
             l1_vscroll_next[11:8] = write_data[3:0];
         end
-        
+
         if (do_write && access_addr == 5'h06) begin
             irq_line_next[8]                 = write_data[7];
             irq_enable_audio_fifo_low_next   = write_data[3];
@@ -442,7 +442,7 @@ module top(
         if (do_write && access_addr == 5'h08) begin
             irq_line_next[7:0] = write_data;
         end
-        
+
         if (sprcol_irq) begin
             irq_status_sprite_collision_next = 1;
         end
@@ -452,7 +452,7 @@ module top(
         if (vblank_pulse) begin
             irq_status_vsync_next = 1;
         end
-        
+
         if (do_write && access_addr == 5'h1E) begin
             spi_txstart = 1;
         end
@@ -461,7 +461,7 @@ module top(
             spi_slow_next   = write_data[1];
             spi_select_next = write_data[0];
         end
-        
+
         // SPI auto-tx function
         if (spi_autotx_r && access_addr == 5'h1E && do_read) begin
             spi_txdata = 8'hFF;
@@ -606,17 +606,17 @@ module top(
     //////////////////////////////////////////////////////////////////////////
     // VRAM Address and Data management
     //////////////////////////////////////////////////////////////////////////
-    
+
     addr_data addr_data(
         .reset(reset),
         .clk(clk),
-        
+
         .do_read(do_read),
         .do_write(do_write),
         .access_addr(access_addr),
         .write_data(write_data),
         .vram_rddata(vram_rddata),
-        
+
         .vram_addr_select(vram_addr_select_r),
         .dc_select(dc_select_r),
 
@@ -632,7 +632,7 @@ module top(
         .vram_addr_decr_1(vram_addr_decr_1_r),
         .vram_data0(vram_data0_r),
         .vram_data1(vram_data1_r),
-        
+
         .ib_addr(ib_addr_r),
         .ib_addr_nibble(ib_addr_nibble_r),
         .ib_4bit_mode(ib_4bit_mode_r),
@@ -652,7 +652,7 @@ module top(
         .fx_16bit_hop(fx_16bit_hop),
         .fx_4bit_mode(fx_4bit_mode),
         .fx_addr1_mode(fx_addr1_mode),
-    
+
         .fx_fill_length_low(fx_fill_length_low),
         .fx_fill_length_high(fx_fill_length_high)
     );
@@ -1188,7 +1188,7 @@ module top(
         .i2s_bck(audio_bck),
         .i2s_data(audio_data));
 
-    
+
     //////////////////////////////////////////////////////////////////////////
     // IRQ
     //////////////////////////////////////////////////////////////////////////

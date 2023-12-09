@@ -1,7 +1,7 @@
 (kicad_pcb (version 20221018) (generator pcbnew)
 
   (general
-    (thickness 1.6)
+    (thickness 1.5842)
   )
 
   (paper "A4")
@@ -38,11 +38,11 @@
       (layer "F.Paste" (type "Top Solder Paste"))
       (layer "F.Mask" (type "Top Solder Mask") (thickness 0.01))
       (layer "F.Cu" (type "copper") (thickness 0.035))
-      (layer "dielectric 1" (type "prepreg") (thickness 0.1) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
-      (layer "In1.Cu" (type "copper") (thickness 0.035))
-      (layer "dielectric 2" (type "core") (thickness 1.24) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
-      (layer "In2.Cu" (type "copper") (thickness 0.035))
-      (layer "dielectric 3" (type "prepreg") (thickness 0.1) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "dielectric 1" (type "prepreg") (thickness 0.0994) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "In1.Cu" (type "copper") (thickness 0.0152))
+      (layer "dielectric 2" (type "core") (thickness 1.265) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "In2.Cu" (type "copper") (thickness 0.0152))
+      (layer "dielectric 3" (type "prepreg") (thickness 0.0994) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
       (layer "B.Cu" (type "copper") (thickness 0.035))
       (layer "B.Mask" (type "Bottom Solder Mask") (thickness 0.01))
       (layer "B.Paste" (type "Bottom Solder Paste"))
@@ -1552,6 +1552,11 @@
       (net 26 "SPI_SSEL_N") (pinfunction "Pin_7") (pintype "passive") (tstamp e2d37cf7-6b14-4cbe-bb2c-7603a70c0e23))
     (pad "8" thru_hole oval (at 0 17.78) (size 1.7 1.7) (drill 1) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (pinfunction "Pin_8") (pintype "passive") (tstamp 55736b91-f4cf-4aee-9f23-e756da9d6fd7))
+    (model "${KICAD7_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x08_P2.54mm_Vertical.wrl"
+      (offset (xyz 0 0 0))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 0 0))
+    )
   )
 
   (footprint "Resistor_SMD:R_0603_1608Metric" (layer "F.Cu")
@@ -5941,10 +5946,15 @@
       (net 4 "L_AUDIO") (pinfunction "Pin_25") (pintype "passive") (tstamp 9271ccc7-8659-4d9f-9fe6-449d25a7448a))
     (pad "26" thru_hole oval (at 2.54 30.48 90) (size 1.7 1.7) (drill 1) (layers "*.Cu" "*.Mask")
       (net 7 "R_AUDIO") (pinfunction "Pin_26") (pintype "passive") (tstamp 2dbb5063-585e-4be5-b105-a62e64260496))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x13_P2.54mm_Vertical.wrl"
-      (offset (xyz 0 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/Connector_PinSocket_2.54mm.3dshapes/PinSocket_2x12_P2.54mm_Vertical.wrl"
+      (offset (xyz 0 -2.54 -9.22))
       (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
+      (rotate (xyz 0 180 0))
+    )
+    (model "${KICAD7_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_2x12_P2.54mm_Vertical.wrl"
+      (offset (xyz 2.54 -2.54 -1.6))
+      (scale (xyz 1 1 1))
+      (rotate (xyz 0 180 0))
     )
   )
 
@@ -6609,10 +6619,10 @@
       (net 2 "+3V3") (pinfunction "Pin_5") (pintype "passive") (tstamp 4b559703-6b1a-4832-ba50-4c91ce2b0c04))
     (pad "6" thru_hole oval (at 0 12.7 90) (size 1.7 1.7) (drill 1) (layers "*.Cu" "*.Mask")
       (net 1 "GND") (pinfunction "Pin_6") (pintype "passive") (tstamp 2f20e713-9fab-4cd2-8c4d-3684a72d39b9))
-    (model "${KICAD6_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x06_P2.54mm_Vertical.wrl"
-      (offset (xyz 0 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/Connector_PinHeader_2.54mm.3dshapes/PinHeader_1x06_P2.54mm_Horizontal.wrl"
+      (offset (xyz 0 -12.7 0))
       (scale (xyz 1 1 1))
-      (rotate (xyz 0 0 0))
+      (rotate (xyz 0 0 180))
     )
   )
 

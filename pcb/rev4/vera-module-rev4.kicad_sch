@@ -8258,7 +8258,7 @@
   )
 
   (symbol (lib_id "Mechanical:Fiducial") (at 107.95 262.89 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-00005e4b2d01)
     (property "Reference" "LOGO1" (at 110.109 261.7216 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11101,7 +11101,7 @@
     (property "Reference" "C14" (at 273.05 128.8034 90)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Value" "1u" (at 273.05 131.1148 90)
+    (property "Value" "1uF" (at 273.05 131.1148 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Footprint" "Capacitor_SMD:C_0603_1608Metric" (at 273.05 134.62 0)
@@ -11562,7 +11562,7 @@
   )
 
   (symbol (lib_id "Mechanical:Fiducial") (at 72.39 262.89 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061abadf4)
     (property "Reference" "FID1" (at 74.549 261.7216 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11586,7 +11586,7 @@
   )
 
   (symbol (lib_id "Mechanical:Fiducial") (at 72.39 267.97 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061abc2c6)
     (property "Reference" "FID2" (at 74.549 266.8016 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11610,7 +11610,7 @@
   )
 
   (symbol (lib_id "Mechanical:Fiducial") (at 72.39 273.05 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061abc53b)
     (property "Reference" "FID3" (at 74.549 271.8816 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11634,7 +11634,7 @@
   )
 
   (symbol (lib_id "Mechanical:Fiducial") (at 72.39 278.13 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061abc99f)
     (property "Reference" "FID4" (at 74.549 276.9616 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11658,7 +11658,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 88.9 262.89 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061af5847)
     (property "Reference" "H1" (at 91.44 261.7216 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11682,7 +11682,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 88.9 267.97 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061af5ea7)
     (property "Reference" "H2" (at 91.44 266.8016 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11706,7 +11706,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 88.9 273.05 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061af60cb)
     (property "Reference" "H3" (at 91.44 271.8816 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11730,7 +11730,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 88.9 278.13 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 00000000-0000-0000-0000-000061af62fd)
     (property "Reference" "H4" (at 91.44 276.9616 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -11983,7 +11983,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 127.635 262.89 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 203bd2e1-c026-4133-b151-de7bdb65285e)
     (property "Reference" "H5" (at 130.175 261.7216 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -12007,7 +12007,7 @@
   )
 
   (symbol (lib_id "Connector_Generic:Conn_02x10_Odd_Even") (at 257.81 208.915 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
+    (in_bom no) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 20b50ac9-cf5f-4ae6-abd8-8039ce47d86b)
     (property "Reference" "J7" (at 259.08 193.04 0)
       (effects (font (size 1.27 1.27)))
@@ -12154,7 +12154,7 @@
   )
 
   (symbol (lib_id "Mechanical:MountingHole") (at 127.635 267.97 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 4ac820da-b687-4685-9565-880f4f0f59c5)
     (property "Reference" "H6" (at 130.175 266.8016 0)
       (effects (font (size 1.27 1.27)) (justify left))
@@ -12203,7 +12203,7 @@
   )
 
   (symbol (lib_id "Connector_Generic:Conn_02x03_Odd_Even") (at 298.45 200.025 0) (unit 1)
-    (in_bom yes) (on_board yes) (dnp no)
+    (in_bom no) (on_board yes) (dnp no)
     (uuid 63aa6ffb-6fb5-40a0-9514-d332147776c9)
     (property "Reference" "J8" (at 299.72 193.04 0)
       (effects (font (size 1.27 1.27)))

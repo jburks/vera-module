@@ -239,13 +239,15 @@ module top(
     // Capture address / write-data at end of write cycle
     reg [4:0] rdaddr_r;
     reg [4:0] wraddr_r;
+    reg [4:0] wraddr_hold_r;
     reg [7:0] wrdata_r;
 
     always @(negedge bus_write) begin
         wrdata_r <= extbus_d;
+        wraddr_r <= wraddr_hold_r;
     end
     always @(posedge bus_write) begin
-        wraddr_r <= extbus_a;
+        wraddr_hold_r <= extbus_a;
     end
     always @(posedge bus_read) begin
         rdaddr_r <= extbus_a;
